@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Makes the page render correctly on phones (this is where 100% of your Instagram traffic lands) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@aifastlaners — AI Money Bible & More</title>
+<meta name="description" content="AI tools, income systems, and 1:1 help from AI Fastlaners.">
+
+<!-- 
+  GOOGLE FONTS
+  We load two typefaces from Google's free font library:
+  - "Sora"  -> bold, geometric, used for headlines (feels techy/modern)
+  - "Inter" -> clean and easy to read, used for body text and buttons
+  preconnect tags tell the browser "we're about to talk to this server" 
+  before we actually request the font, which makes it load a bit faster.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     1. DESIGN TOKENS
+     These are variables (like in a spreadsheet) that hold our 
+     colors, spacing, and fonts. Change a value here once, and it 
+     updates EVERYWHERE it's used on the page. This is the single 
+     most important habit for maintainable CSS.
+     ============================================================ */
+  :root {
+    --bg: #ffffff;             /* page background — pure white, as requested */
+    --ink: #12131a;            /* near-black text, softer than pure #000 */
+    --muted: #6b7280;          /* gray for secondary text (descriptions, captions) */
+    --card: #f7f7f9;           /* very light gray used behind each card/section */
+    --line: #ececef;           /* hairline border color between/around cards */
+    --accent: #4338ca;         /* primary accent — indigo. Used for links & focus rings */
+    --accent-ink: #ffffff;     /* text color that sits ON TOP of the accent color */
+    --cta: #ff6a3d;            /* "fast lane" orange — reserved ONLY for the main CTA buttons,
+                                   so the eye is always drawn to the thing that makes money */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(18,19,26,0.04), 0 8px 24px rgba(18,19,26,0.06);
+    --maxw: 480px;             /* the whole page is one narrow column, like a phone screen,
+                                   even on desktop — this is intentional for a link-in-bio page */
+  }
+
+  /* A modern reset: makes every browser start from the same baseline */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 20px 80px;
+  }
+
+  /* Every section on the page lives inside this centered column */
+  .page {
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+
+  /* ============================================================
+     2. HEADER — logo circle, handle, one-line bio
+     ============================================================ */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  /* The circular logo frame. Swap the <img> inside it for your real logo. */
+  .logo-ring {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    padding: 3px;
+    /* a soft gradient ring around the logo — subtle, not loud */
+    background: conic-gradient(from 180deg, var(--accent), var(--cta), var(--accent));
+    margin-bottom: 16px;
+    /* one tasteful animation on load only — see @keyframes below */
+    animation: ring-in 900ms ease-out both;
+  }
+
+  .logo-ring__inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #fff;
+    padding: 4px;
+  }
+
+  .logo-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* Stands in for your real logo until you upload one — always renders,
+     never shows a "broken image" icon like a missing .png file would */
+  .logo-fallback {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.02em;
+  }
+
+  .handle {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .bio {
+    color: var(--muted);
+    font-size: 14.5px;
+    max-width: 320px;
+  }
+
+  /* Respect people who've asked their OS to reduce motion (accessibility) */
+  @media (prefers-reduced-motion: reduce) {
+    .logo-ring { animation: none; }
+  }
+
+  @keyframes ring-in {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ============================================================
+     3. CARD — the reusable "block" every section is built from
+     ============================================================ */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .card h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  /* Generic button used everywhere. .btn--cta gets the loud orange treatment,
+     .btn--ghost is a quieter outlined style for secondary actions. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14.5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  /* Visible focus outline for keyboard users — do not remove this for accessibility */
+  .btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .btn--cta {
+    background: var(--cta);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(255,106,61,0.35);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+
+  .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ============================================================
+     4. EBOOK SECTION — image on one side, copy + CTA on the other
+     ============================================================ */
+  .ebook-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .ebook-cover {
+    flex: 0 0 96px;
+    width: 96px;
+    height: 128px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(18,19,26,0.15);
+    background: #e5e5ea; /* placeholder tone visible until you drop your real cover in */
+  }
+
+  .ebook-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Stands in for your real ebook cover until you upload one */
+  .cover-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #dcdce2, #eaeaee);
+    color: var(--muted);
+  }
+
+  .ebook-copy { flex: 1; min-width: 0; }
+  .ebook-copy h2 { margin-bottom: 4px; }
+  .ebook-copy p { margin-bottom: 12px; }
+
+  /* Below ~380px wide (very small phones), stack the image above the text instead */
+  @media (max-width: 380px) {
+    .ebook-row { flex-direction: column; align-items: flex-start; }
+    .ebook-cover { width: 100%; height: 180px; flex: none; }
+  }
+
+  /* ============================================================
+     5. PRICE / GATE NOTE — small helper text under paid links
+     ============================================================ */
+  .fine-print {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .fine-print svg { flex-shrink: 0; }
+
+  /* ============================================================
+     6. FOOTER — social row + copyright
+     ============================================================ */
+  .footer {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .social-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .social-row a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .social-row a:hover { border-color: var(--accent); color: var(--accent); }
+
+  .copyright {
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="logo-ring">
+      <div class="logo-ring__inner">
+        <!-- 
+          REPLACE THIS WHOLE <div class="logo-fallback">...</div> BLOCK 
+          with: <img src="your-logo.png" alt="AI Fastlaners logo">
+          once you have your real logo file. Keep it square (e.g. 200x200px) 
+          — the CSS crops it into a circle for you.
+          Until then, this inline placeholder renders instantly with 
+          no missing-file errors.
+        -->
+        <div class="logo-fallback" aria-label="AI Fastlaners logo placeholder">AF</div>
+      </div>
+    </div>
+    <div class="handle">@aifastlaners</div>
+    <p class="bio">AI tools, income systems &amp; automation — built for the fast lane.</p>
+  </header>
+
+  <!-- ============ 1. EBOOK ============ -->
+  <section class="card">
+    <span class="eyebrow">Free-ish Resource</span>
+    <div class="ebook-row">
+      <div class="ebook-cover">
+        <!-- 
+          REPLACE THIS WHOLE <div class="cover-fallback">...</div> BLOCK
+          with: <img src="your-ebook-cover.jpg" alt="AI Money Bible ebook cover">
+          once you have your real cover image.
+        -->
+        <div class="cover-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18Z"/>
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          </svg>
+        </div>
+      </div>
+      <div class="ebook-copy">
+        <h2>The AI Money Bible</h2>
+        <p>The exact AI tools &amp; income playbooks I use every week — no fluff, just what works.</p>
+      </div>
+    </div>
+    <a class="btn btn--cta" href="https://gum.co/YOUR-LINK" target="_blank" rel="noopener">
+      Get It Now →
+    </a>
+  </section>
+
+  <!-- ============ 2. PAID COMMUNITY ============ -->
+  <section class="card">
+    <span class="eyebrow">Paid Community</span>
+    <h2>Join the AI Fastlaners Circle</h2>
+    <p>Weekly drops, live Q&amp;As, and direct access to me — for people serious about building with AI.</p>
+    <a class="btn btn--cta" href="https://your-payment-link.com" target="_blank" rel="noopener">
+      Join the Community
+    </a>
+    <div class="fine-print">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Payment required — you'll get access instructions right after checkout.
+    </div>
+  </section>
+
+  <!-- ============ 3. WORK 1:1 ============ -->
+  <section class="card">
+    <span class="eyebrow">Done-For-You</span>
+    <h2>Work 1:1 With Me</h2>
+    <p>Automation, consulting, AI agents, or a partnership — see what fits and book a call.</p>
+    <!-- This points at the second page you'll upload alongside this one -->
+    <a class="btn btn--ghost" href="services.html">
+      See Services →
+    </a>
+  </section>
+
+  <!-- ============ 4. NEWSLETTER ============ -->
+  <section class="card">
+    <span class="eyebrow">Free</span>
+    <h2>Subscribe to My Newsletter</h2>
+    <p>One email a week. AI tools, income breakdowns, and what's actually working right now.</p>
+    <a class="btn btn--ghost" href="https://your-newsletter-link.com" target="_blank" rel="noopener">
+      Subscribe →
+    </a>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="social-row">
+      <a href="https://instagram.com/aifastlaners" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+      <a href="https://x.com/aifastlaners" target="_blank" rel="noopener" aria-label="X / Twitter">X</a>
+      <a href="https://threads.net/@aifastlaners" target="_blank" rel="noopener" aria-label="Threads">TH</a>
+      <a href="https://facebook.com/aifastlaners" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+    </div>
+    <p class="copyright">© 2026 AI Fastlaners. All rights reserved.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
